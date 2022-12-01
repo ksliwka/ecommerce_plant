@@ -1,0 +1,38 @@
+<% layout('layouts/boilerplate')%>
+
+<div class="container mt-5 position-relative">
+  <div class="row justify-content-center">
+    <div class="container_login col-md-4 p-5">
+      <h1 class="fw-bolder fs-1 login_heading mb-4">LOGIN</h1>
+      <form action="/login" method="POST" class="needs-validation">
+        <div class="mb-3">
+          <label class="form-label" for="username"></label>
+          <input
+            class="form-control no-border"
+            placeholder="Username"
+            type="text"
+            id="username"
+            name="username"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="password"></label>
+          <input
+            class="form-control no-border"
+            placeholder="Password"
+            type="password"
+            id="password"
+            name="password"
+            required
+          />
+        </div>
+        <button class="btn btn-dark mt-5 login_button">Login</button>
+        <p class="mt-4 text-muted">
+          Don't have an account? <a href="/register" class="ms-1">Sign up</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>

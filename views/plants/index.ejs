@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate') %>
+
+
+<ul>
+  <div class="container mt-4">
+    
+    <div class="row">
+    <% for(let plant of plants){ %>
+
+        <div class="col-md-4 ">
+      <div class="card_custom card h-300 mb-3 d-inline d-block hover-shadow m-3">
+        <a href="/plants/<%= plant._id %>" class="text-decoration-none" >
+      
+          <img
+            class="card-img-top img-fluid"
+            alt=""
+            src="<%= plant.image %> "
+          />
+
+          <div class="card-body text-dark">
+            <h5 class=" card-title"><%=plant.title%></h5>
+            <p class="card-text">
+              <small class="text-muted"> <%= plant.location %> </small>
+            </p>
+            <p class="card-text ">
+              <small class="fw-bolder" >$ <%= plant.price %> </small>
+            </p>
+            
+
+          </div>
+        </div>
+    </a>
+  </div>
+  
+
+    <% } %>
+  </div>
+  </div>
+</ul>

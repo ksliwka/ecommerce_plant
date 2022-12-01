@@ -1,0 +1,61 @@
+<% layout('layouts/boilerplate')%>
+<div class="container mt-4">
+  <% if(currentUser){ %>
+  <form
+    action="/user/<%= user._id %>/reviews "
+    method="POST"
+    class="mb-3 needs-validation"
+    novalidate
+  >
+    <h2>Leave a Review</h2>
+    <a
+      class="btn btn-dark btn-block"
+      id="viewBtn"
+      href="/user/<%= user._id %>  "
+      >Back to user
+    </a>
+    <div class="mb-3">
+      <label class="form-label" for="rating">Rating</label>
+      <input
+        class="form-range"
+        type="range"
+        min="1"
+        max="5"
+        name="review[rating]"
+        id="rating"
+      />
+    </div>
+    <div class="mb-3">
+      <textarea
+        placeholder="Leave here a review!"
+        class="form-control"
+        name="review[body]"
+        id=""
+        cols="30"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+    <button class="btn btn-dark login_button">Submit</button>
+  </form>
+  <% } %>
+  <% for(let review of user.reviews) {%>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Rating: <%= review.rating %></h5>
+      <p class="card-subtitle mb-2 text-muted">
+        By <a href="/user/<%= review.author._id %> " class="text-muted"><%= review.author.username %></a>
+      </p>
+      <p class="card-text">Review: <%= review.body %></p>
+      <% if(currentUser && review.author.equals(currentUser._id)) {%>
+      <form
+        action="/plants/<%=user._id%>/reviews/<%=review._id%>?_method=DELETE"
+        method="POST"
+      >
+        <button class="btn btn-sm btn-outline-dark login_button">Delete</button>
+      </form>
+      <% } %> 
+    </div>
+  </div>
+  <% } %>
+</div>

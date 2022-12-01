@@ -1,0 +1,25 @@
+
+
+module.exports.plants = [
+  "Caladium",
+  "Monstera",
+  "Coleus",
+  "Daylily",
+  "Bluestem",
+  "Hlue Fescue",
+  "Ghost Town",
+  "Fan Flower",
+  "Field Pansy",
+  "Garden Lily",
+  "Gazania",
+  "Grass Pink",
+  "Hosta Kabitan",
+  "Ivy Geranium",
+  "Lavender",
+  "Peony",
+  "Sands",
+  "Rose Moss",
+  "Sea Holly",
+  "Siberian Iris",
+  "Sunflower",
+];

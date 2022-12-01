@@ -1,0 +1,70 @@
+<% layout('layouts/boilerplate')%>
+
+<div class="container mt-5 position-relative">
+  <div class="row justify-content-center">
+    <div class="container_register col-md-4 p-5">
+      <h1 class="fw-bolder login_heading mb-4">REGISTER</h1>
+      <form action="/register" method="POST" class="needs-validation">
+        <div class="mb-3">
+          <label class="form-label" for="username"></label>
+          <input
+            class="form-control no-border"
+            placeholder="Username"
+            type="text"
+            id="username"
+            name="username"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="email"></label>
+          <input
+            class="form-control no-border"
+            placeholder="E-mail"
+            type="email"
+            id="email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="password"></label>
+          <input
+            class="form-control no-border"
+            placeholder="password"
+            type="password"
+            id="password"
+            name="password"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="location"></label>
+          <input
+            class="form-control no-border"
+            placeholder="Location"
+            type="text"
+            id="location"
+            name="location"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="image"></label>
+          <input
+            class="form-control no-border"
+            placeholder="Profile picture"
+            type="text"
+            id="image"
+            name="user[image]"
+            required
+          />
+        </div>
+        <button class="btn btn-dark mt-5 login_button">Sign up</button>
+      </form>
+      <p class="mt-4 text-muted">
+        Already have an account? <a href="/login" class="ms-1">Sign in</a>
+      </p>
+    </div>
+  </div>
+</div>

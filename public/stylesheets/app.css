@@ -1,0 +1,69 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
+
+:root {
+  --bs-body-font-family: "Montserrat", sans-serif;
+}
+
+/* navbar */
+
+nav {
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 400;
+}
+
+.navbar-brand {
+  letter-spacing: 1rem;
+}
+
+.bi-cart {
+  color: black;
+}
+
+/* login */
+
+.container_register {
+  width: 600px;
+}
+
+.container_login,
+.container_register,
+.container_new {
+  box-shadow: 10px 5px 5px rgb(196, 196, 196);
+}
+
+.login_heading {
+  letter-spacing: 10px;
+}
+
+@media (min-width: 1400px) {
+  .container-login {
+    width: 900px;
+  }
+}
+.no-border {
+  border: none;
+  border-radius: 0%;
+  border-bottom: thin solid;
+  border-color: rgb(196, 196, 196);
+}
+
+.login_button {
+  border-radius: 0% !important;
+}
+
+/* index page */
+
+.card_custom {
+  border: none;
+  background-color: rgba(247, 247, 247, 0.88);
+  border-radius: 0%;
+
+  /* border-bottom: thin solid rgb(196, 196, 196); */
+}
+.card_custom:hover {
+  border: none;
+  border-radius: 0%;
+
+  box-shadow: 10px 5px 5px rgb(196, 196, 196);
+  /* border-bottom: thin solid rgb(196, 196, 196); */
+}
