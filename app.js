@@ -250,9 +250,7 @@ app.get("/user/:id/cart", isLoggedIn, async (req, res) => {
   console.log(user);
   req.session.amount = 0;
   const cart = [...user.cart];
-  cart.map((item) => {
-    req.session.amount += item.price;
-  });
+  
   console.log(cart);
 
   // cart.map((item) => {

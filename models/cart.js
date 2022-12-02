@@ -3,23 +3,21 @@ const Schema = mongoose.Schema;
 
 const cartSchema = new Schema(
   {
-    plants: {
-      type: Schema.Types.ObjectId,
-      ref: "Plant",
-      // required: true,
-    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-
+      
+        plants: {
+          type: Schema.Types.ObjectId,
+          ref: "Plant",
+          // required: true,
+        },
    
-    amount: {
-      type: Number,
-      required: true,
-      min: 1,
-      default: 1,
-    },
+        
+      
+
+
   },
   {
     timestamps: true,
