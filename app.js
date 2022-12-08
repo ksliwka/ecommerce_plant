@@ -17,10 +17,12 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const flash = require("connect-flash");
 const { isLoggedIn } = require("./middleware.js");
-const cart = require("./models/cart");
 const { captureStackTrace } = require("./utils/ExpressError");
 
-const plants = require('./routes/plants')
+const plants = require('./routes/plants');
+const user = require('./routes/user')
+const reviews = require('./routes/reviews')
+const cart = require('./routes/cart')
 
 
 mongoose.connect("mongodb://localhost:27017/plant-shop"); //gdzie znajduje się nasza db (wpisując use db to zamiast db wpisuje plant-shop)
@@ -70,18 +72,13 @@ app.use((req, res, next) => {
 
 
 
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((err) => err.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
 
 
-app.use('/plants', plants)
+
+app.use('/plants', plants);
+app.use('/user', user);
+app.use('/user/:id/reviews', reviews)
+app.use('/user/:id/cart', cart)
 
 
 app.get("/", (req, res) => {
@@ -141,93 +138,10 @@ app.get("/logout", (req, res, next) => {
 
 
 
-app.get("/user", async (req, res) => {
-  const users = await User.find({});
 
-  console.log(users);
-  res.render("users/index", { users });
-});
 
-app.get("/user/:id", async (req, res) => {
-  const user = await User.findById(req.params.id).populate("reviews");
-  const plants = await Plant.find({ author: user._id });
 
-  res.render("users/show", { user, plants });
-});
 
-app.get("/user/:id/reviews", async (req, res) => {
-  const user = await User.findById(req.params.id).populate({
-    path: "reviews",
-    populate: { path: "author" },
-  });
-  res.render("users/reviews", { user });
-});
-
-app.post(
-  "/user/:id/reviews",
-  isLoggedIn,
-  validateReview,
-  catchAsync(async (req, res) => {
-    const user = await User.findById(req.params.id);
-    const review = new Review(req.body.review);
-    review.author = req.user._id;
-    user.reviews.push(review);
-    await review.save();
-    await user.save();
-    req.flash("success", "Successfully created review.");
-    res.redirect(`/user/${user._id}`);
-  })
-);
-
-app.delete(
-  "/user/:id/reviews/:reviewId",
-  catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await User.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    req.flash("success", "Successfully deleted review.");
-    res.redirect(`/user/${id}`);
-  })
-);
-
-//working without quantity
-
-app.get("/user/:id/cart", isLoggedIn, async (req, res) => {
-  const user = await User.findById(req.params.id).populate("cart");
-  const cart = [...user.cart];
-
-  // cart.map((item) => {
-  //     req.session.amount += item.price;
-  // });
-  res.render("users/cart", { cart, user });
-});
-
-app.post(
-  "/user/:id/cart/:plantsId",
-  isLoggedIn,
-  catchAsync(async (req, res) => {
-    const { id, plantsId } = req.params;
-    const plant = await Plant.findById(req.params.plantsId);
-    const user = await User.findById(req.params.id);
-    if (user.cart.indexOf(plantsId) === -1) {
-      user.cart.push(plant);
-      await user.save();
-      req.flash("success", "Successfully, added to cart");
-      res.redirect(`/plants/${plantsId}`);
-    } else {
-      req.flash("error", "You already have it in your cart.");
-      res.redirect(`/plants/${plantsId}`);
-    }
-  })
-);
-
-app.delete("/user/:id/cart/:cartId", async (req, res) => {
-  const { id, cartId } = req.params;
-  await User.findByIdAndUpdate(id, { $pull: { cart: cartId } });
-  await Cart.findByIdAndDelete(cartId);
-  req.flash("success", "Successfully deleted from Cart.");
-  res.redirect(`/user/${id}/cart`);
-});
 
 
 app.all("*", (req, res, next) => {
