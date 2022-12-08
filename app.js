@@ -20,6 +20,9 @@ const { isLoggedIn } = require("./middleware.js");
 const cart = require("./models/cart");
 const { captureStackTrace } = require("./utils/ExpressError");
 
+const plants = require('./routes/plants')
+
+
 mongoose.connect("mongodb://localhost:27017/plant-shop"); //gdzie znajduje się nasza db (wpisując use db to zamiast db wpisuje plant-shop)
 
 const db = mongoose.connection;
@@ -65,15 +68,7 @@ app.use((req, res, next) => {
   next();
 }); //so now in all my templates I should have access to current user, success and error
 
-const validatePlant = (req, res, next) => {
-  const { error } = plantSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
+
 
 const validateReview = (req, res, next) => {
   const { error } = reviewSchema.validate(req.body);
@@ -84,6 +79,14 @@ const validateReview = (req, res, next) => {
     next();
   }
 };
+
+
+app.use('/plants', plants)
+
+
+app.get("/", (req, res) => {
+  res.render("home");
+});
 
 app.get("/register", (req, res) => {
   res.render("users/register");
@@ -136,42 +139,7 @@ app.get("/logout", (req, res, next) => {
   res.redirect("/plants");
 });
 
-app.get("/", (req, res) => {
-  res.render("home");
-});
 
-app.get(
-  "/plants",
-  catchAsync(async (req, res) => {
-    const {searchTerm} = req.query;
-    const plants = await Plant.find({});
-    res.render("plants/index", { plants, searchTerm });
-
-  })
-);
-
-
-
-
-app.get("/plants/new", isLoggedIn, (req, res) => {
-  res.render("plants/new");
-});
-
-app.post(
-  "/plants",
-  isLoggedIn,
-  validatePlant,
-  catchAsync(async (req, res, next) => {
-    // if (!req.body.plant) throw new ExpressError("Invalid Plant Data", 400);
-
-    const plant = new Plant(req.body.plant);
-    plant.author = req.user._id;
-    await plant.save();
-    req.flash("success", "Successfully added plant");
-
-    res.redirect(`/plants/${plant._id}`);
-  })
-);
 
 app.get("/user", async (req, res) => {
   const users = await User.find({});
@@ -261,182 +229,6 @@ app.delete("/user/:id/cart/:cartId", async (req, res) => {
   res.redirect(`/user/${id}/cart`);
 });
 
-// app.get(
-//   "/cart",
-//   isLoggedIn,
-//   catchAsync(async (req, res) => {
-//     const owner = req.user._id;
-//     const cart = await Cart.findOne({ owner });
-//     if (cart && cart.items.length > 0) {
-//       res.render("users/cart");
-//     }
-//   })
-// );
-
-// app.post("/cart", isLoggedIn, async (req, res) => {
-//   const user = await User.findById(req.params.id);
-//   const owner = req.user._id;
-//   const { plantId, quantity } = req.body;
-//   try {
-//     const cart = await Cart.findOne({ owner });
-//     const plant = await Plant.findOne({ _id: plantId });
-//     if (!plant) {
-//       res.status(404).send({ message: "item not found" });
-//       return;
-//     }
-//     const price = plant.price;
-//     const name = plant.name;
-//     //If cart already exists for user,
-//     if (cart) {
-//       const plantIndex = cart.plants.findIndex(
-//         (plant) => plant.plantId == plantId
-//       );
-//       //check if product exists or not
-//       if (plantIndex > -1) {
-//         let product = cart.plants[plantIndex];
-//         product.quantity += quantity;
-//         cart.bill = cart.plants.reduce((acc, curr) => {
-//           return acc + curr.quantity * curr.price;
-//         }, 0);
-//         cart.plants[plantIndex] = product;
-//         await cart.save();
-//         res.status(200).send(cart);
-//       } else {
-//         cart.plants.push({ plantId, name, quantity, price });
-//         cart.bill = cart.plants.reduce((acc, curr) => {
-//           return acc + curr.quantity * curr.price;
-//         }, 0);
-//         await cart.save();
-//         res.status(200).send(cart);
-//       }
-//     } else {
-//       //no cart exists, create one
-//       const newCart = await Cart.create({
-//         owner,
-//         items: [{ plantId, name, quantity, price }],
-//         bill: quantity * price,
-//       });
-//       return res.status(201).send(newCart);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send("something went wrong");
-//   }
-// });
-
-// app.get("/user/:id/cart/:plantId/:cartId", isLoggedIn, async (req, res) => {
-//   const { id, plantId, cartId } = req.params;
-//   console.log(id);
-//   console.log(plantId);
-//   console.log(cartId);
-//   const plant = await Plant.findById(plantId);
-//   const user = await User.findById(id);
-//   console.log(plant);
-//   console.log(user);
-
-//   res.render("users/cart", { user, plant });
-// });
-
-// app.post("/user/:id/cart/:plantId", isLoggedIn, async (req, res) => {
-//   // res.send("You made it");
-//   console.log("HIT");
-//   const { id, plantId } = req.params;
-//   console.log("planid");
-//   console.log(plantId);
-//   const user = await User.findById(req.params.id);
-//   console.log("user");
-//   console.log(user);
-//   const plant = await Plant.findById(plantId);
-//   console.log("plant");
-//   console.log(plant);
-//   const cart = new Cart(plant);
-//   console.log("cart new");
-//   console.log(cart);
-//   user.carts.push(cart);
-//   console.log("user");
-//   console.log(user.carts);
-//   console.log("end");
-
-//   console.log(user);
-//   req.flash("success", "Successfully added to cart.");
-//   res.redirect(`/user/${user._id}/cart/${plant._id}/${cart._id}`);
-//   console.log("redirect");
-// });
-// app.post("/user/:id/cart", isLoggedIn, async (req, res) => {
-//   const user = await User.findById(req.params.id);
-//   const plant = await Plant(req.body);
-//   user.cart.push(plant);
-//   await cart.save();
-//   await user.save();
-//   req.flash("success", "Successfully added to cart.");
-
-//   res.redeirect("/plants/:id", { plant });
-// });
-
-app.get("/plants/:id", async (req, res) => {
-  const plant = await Plant.findById(req.params.id)
-    .populate("reviews")
-    .populate("author");
-  if (!plant) {
-    req.flash("error", "Cannot find that plant!");
-    return res.redirect("/plants");
-  }
-  res.render("plants/show", { plant });
-});
-
-app.get(
-  "/plants/:id/edit",
-  isLoggedIn,
-  catchAsync(async (req, res) => {
-    const plant = await Plant.findById(req.params.id);
-    res.render("plants/edit", { plant });
-  })
-);
-
-app.put(
-  "/plants/:id",
-  validatePlant,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const plant = await Plant.findByIdAndUpdate(id, { ...req.body.plant });
-    req.flash("success", "Successfully updated plant.");
-    res.redirect(`/plants/${plant._id}`);
-  })
-);
-
-app.delete(
-  "/plants/:id",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Plant.findByIdAndDelete(id);
-    res.redirect("/plants");
-  })
-);
-
-app.post(
-  "/plants/:id/reviews",
-  validateReview,
-  catchAsync(async (req, res) => {
-    const plant = await Plant.findById(req.params.id);
-    const review = new Review(req.body.review);
-    plant.reviews.push(review);
-    await review.save();
-    await plant.save();
-    req.flash("success", "Successfully created review.");
-    res.redirect(`/plants/${plant._id}`);
-  })
-);
-
-app.delete(
-  "/plants/:id/reviews/:reviewId",
-  catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Plant.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    req.flash("success", "Successfully deleted review.");
-    res.redirect(`/plants/${id}`);
-  })
-);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 404));
