@@ -1,27 +1,32 @@
 <% layout('layouts/boilerplate')%>
-<div class="contaier m-3">
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-3">
+<div class="container mt-4">
+  <div class="row offset-1 ms-md-5 my-4 ">
+    <div class="col-lg-2 col-sm-3 col-4 ">
+      <img
+        src="<%= user.image %> "
+        alt=""
+        class="img-fluid rounded"
+        style="height: 10rem"
+      />
+    </div>
+    <div class="col-lg-9 col-sm-8 col-7">
       <h1><%= user.username %></h1>
       <p><%= user.location %></p>
-      
+
       <a
-        class="btn btn-dark btn-block login_button"
+        class="btn btn-dark btn-block login_button black_button"
         id="viewBtn"
         href="/user/<%= user._id %>/reviews  "
         >View reviews
       </a>
     </div>
   </div>
-</div>
 
-<ul>
-  <div class="container mt-4">
-    <div class="row">
+  <ul>
+    <div class="row d-flex justify-content-center ">
       <% for(let plant of plants){ %>
 
-      <div class="col-sm-4">
+      <div class="col-md-4 ">
         <div
           class="card_custom card h-300 mb-3 d-inline d-block hover-shadow m-3"
         >
@@ -47,5 +52,5 @@
 
       <% } %>
     </div>
-  </div>
-</ul>
+  </ul>
+</div>

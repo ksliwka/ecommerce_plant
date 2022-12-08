@@ -2,12 +2,11 @@
 
 <div class="container mt-5">
   <div class="container">
-    <h1>cart</h1>
-    <p><%= user.username %></p>
+    <h2 class="mb-5">CART</h2>
     <div class="row justify-content-start gy-5 gx-0">
       <% for(let item of cart) {%>
 
-      <div class="col-2">
+      <div class="col-lg-2 col-sm-3 col-4 me-3">
         <img
           src="<%= item.image %> "
           alt=""
@@ -15,16 +14,17 @@
           style="height: 10rem"
         />
       </div>
-      <div class="col-9 border-bottom">
+      <div class="col-lg-9 col-sm-8 col-7 border-bottom">
         <h3><%= item.title %></h3>
         <p><%= item.price %> </p>
+        <form
+        action="/user/<%=user._id%>/cart/<%=item._id%>?_method=DELETE"
+        method="POST"
+      >
+        <button class="btn btn-sm btn-outline-dark login_button">Delete</button>
+      </form>
       </div>
-      <form
-      action="/user/<%=user._id%>/cart/<%=item._id%>?_method=DELETE"
-      method="POST"
-    >
-      <button class="btn btn-sm btn-outline-dark login_button">Delete</button>
-    </form>
+  
       <% } %>
     </div>
   </div>

@@ -5,7 +5,7 @@
     <div class="row justify-content-start gy-5 gx-0">
       <% for(let user of users) {%>
 
-      <div class="col-2">
+      <div class="col-lg-2 col-sm-3 col-4 me-3">
         <img
           src="https://images.unsplash.com/photo-1604961410267-9f76682d25e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1292&q=80"
           alt=""
@@ -13,12 +13,12 @@
           style="height: 10rem"
         />
       </div>
-      <div class="col-9 border-bottom">
+      <div class="col-lg-9 col-sm-8 col-7 border-bottom">
         <h3><%= user.username %></h3>
         <p>Location: <%= user.location %></p>
         <a
           href="/user/<%= user._id %> "
-          class="btn btn-sm btn-dark btn-block login_button"
+          class="btn btn-sm btn-dark btn-block login_button black_button"
           >View profile</a
         >
       </div>

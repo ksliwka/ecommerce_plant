@@ -15,11 +15,62 @@ nav {
   letter-spacing: 1rem;
 }
 
+.navbar_cart-icon {
+  position: relative;
+  bottom: 0.2rem;
+}
+
 .bi-cart {
   color: black;
 }
 
+.nav-icon:focus {
+  border-color: none;
+  box-shadow: none;
+}
+
+.nav-link:hover {
+  color: black;
+}
+
+
+
+.searchBox {
+  position: absolute;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: white;
+  align-items: center;
+  padding: 0 10px;
+
+  transition: 0.5s ease-in-out;
+}
+.searchBox.active {
+
+  right: 0;
+  
+}
+
+.search_input{
+  width: 90vw;
+}
+
+
+
+
+
 /* login */
+
+
+
+
+
+
+
+
+
 
 .container_register {
   width: 600px;
@@ -51,6 +102,12 @@ nav {
   border-radius: 0% !important;
 }
 
+.black_button:hover{
+  border-color: black;
+  background-color: white;
+  color: black;
+}
+
 /* index page */
 
 .card_custom {
@@ -66,4 +123,69 @@ nav {
 
   box-shadow: 10px 5px 5px rgb(196, 196, 196);
   /* border-bottom: thin solid rgb(196, 196, 196); */
+}
+
+.form-control:focus {
+  border-color: black;
+  box-shadow: none;
+}
+
+/* show plant page */
+
+.add_cart_button {
+  border-radius: 0% !important;
+  background-color: black;
+  color: white;
+}
+.add_cart_button:hover {
+  background-color: none !important;
+  border: solid thin;
+  border-color: black;
+}
+
+
+
+
+/* main content */
+
+.main {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  /* //so we dont have scroll at the button when we shrink viewport */
+}
+.main img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translateX(-50%) translateY(-50%);
+}
+.main_content {
+  z-index: 1;
+}
+@media (min-width: 576px) {
+  .main_content_width {
+    width: 500px;
+  }
+}
+@media (min-width: 768px) {
+  .main_content_width {
+    width: 540px;
+  }
+}
+@media (min-width: 1400px) {
+  .main_content_heading {
+    font-size: 3.2rem;
+  }
+}
+.main span {
+  font-weight: 500;
+}
+
+.home_style {
+  border-radius: 0%;
 }

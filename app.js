@@ -93,8 +93,8 @@ app.post(
   "/register",
   catchAsync(async (req, res) => {
     try {
-      const { email, username, location, password } = req.body;
-      const user = new User({ email, location, username });
+      const { email, username, location, password, image } = req.body;
+      const user = new User({ email, location, username, image });
       const registeredUser = await User.register(user, password);
       req.login(registeredUser, (err) => {
         if (err) return next(err);
@@ -143,10 +143,15 @@ app.get("/", (req, res) => {
 app.get(
   "/plants",
   catchAsync(async (req, res) => {
+    const {searchTerm} = req.query;
     const plants = await Plant.find({});
-    res.render("plants/index", { plants });
+    res.render("plants/index", { plants, searchTerm });
+
   })
 );
+
+
+
 
 app.get("/plants/new", isLoggedIn, (req, res) => {
   res.render("plants/new");
@@ -178,7 +183,6 @@ app.get("/user", async (req, res) => {
 app.get("/user/:id", async (req, res) => {
   const user = await User.findById(req.params.id).populate("reviews");
   const plants = await Plant.find({ author: user._id });
-  console.log(user);
 
   res.render("users/show", { user, plants });
 });
@@ -218,40 +222,11 @@ app.delete(
   })
 );
 
-// app.get(
-//   "/user/:id/cart",
-//   isLoggedIn,
-//   catchAsync(async (req, res) => {
-//     const user = await User.findById(req.params.id);
-//     const cart = await Cart.find({ owner: req.user._id }).populate('plants.plantId')
-
-//     // const plant = await Plant.findById(cart[0].plants[0].plantId);
-//     console.log(cart)
-
-//     // console.log('i')
-//     // console.log(cart);
-
-//     // let result = cart.map((a) => a.plants);
-
-//     // result.populate('plants')
-//     // console.log(result)
-
-//     // let result = cart.plants.map(a => a.plantId)
-//     // const plant = await Plant.find({plantId: cart[0].plants[0]});
-
-//     // const plant = await Plant.findById(result);
-
-//     res.render("users/cart", { user, carts: cart });
-//   })
-// );
+//working without quantity
 
 app.get("/user/:id/cart", isLoggedIn, async (req, res) => {
   const user = await User.findById(req.params.id).populate("cart");
-  console.log(user);
-  req.session.amount = 0;
   const cart = [...user.cart];
-  
-  console.log(cart);
 
   // cart.map((item) => {
   //     req.session.amount += item.price;
@@ -266,12 +241,15 @@ app.post(
     const { id, plantsId } = req.params;
     const plant = await Plant.findById(req.params.plantsId);
     const user = await User.findById(req.params.id);
-
-    user.cart.push(plant);
-    await user.save();
-    console.log(user);
-    req.flash("success", "Successfully, added to cart");
-    res.redirect(`/user/${id}/cart`);
+    if (user.cart.indexOf(plantsId) === -1) {
+      user.cart.push(plant);
+      await user.save();
+      req.flash("success", "Successfully, added to cart");
+      res.redirect(`/plants/${plantsId}`);
+    } else {
+      req.flash("error", "You already have it in your cart.");
+      res.redirect(`/plants/${plantsId}`);
+    }
   })
 );
 
@@ -280,31 +258,8 @@ app.delete("/user/:id/cart/:cartId", async (req, res) => {
   await User.findByIdAndUpdate(id, { $pull: { cart: cartId } });
   await Cart.findByIdAndDelete(cartId);
   req.flash("success", "Successfully deleted from Cart.");
-  res.redirect(`/user/${req.user._id}/cart`);
+  res.redirect(`/user/${id}/cart`);
 });
-
-// app.post(
-//   "/user/:id/cart/:plantsId",
-//   isLoggedIn,
-//   catchAsync(async (req, res) => {
-//     const { id, plantsId } = req.params;
-//     const user = await User.findById(req.params.id);
-//     // const plant = await Plant.findById(req.params.plantsId);
-//     const cart = new Cart(req.body.cart)
-//     console.log(cart);
-//     cart.owner = req.user._id;
-//     console.log(cart)
-//     console.log(cart.owner)
-//     cart.plants.push({ plantId: req.body.plantsId });
-//     console.log(cart.plants)
-//     console.log(cart)
-//     console.log("end");
-//     // cart.plants.push(cart);
-//     await cart.save();
-//     console.log(cart.plants);
-//     res.redirect(`/user/${id}/cart`);
-//   })
-// );
 
 // app.get(
 //   "/cart",

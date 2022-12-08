@@ -20,7 +20,7 @@ const seedDB = async () => {
     const random1000 = Math.floor(Math.random() * 1000);
     const price = Math.floor(Math.random() * 10) + 10;
     const flora = new Plant({
-      author: "6382613226903a075940b0b3",
+      author: "6391f585238a84222f85f084",
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
       title: `${sample(plants)}`,
       image: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1364&q=80",

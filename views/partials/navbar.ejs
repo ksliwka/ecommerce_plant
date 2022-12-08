@@ -1,26 +1,50 @@
-<nav class="navbar sticky-top" style="background: transparent">
-  <div class="container-fluid mx-5 mt-2">
+<nav class="navbar sticky-top mt-3 p-3" style="background: white">
+  <div class="container-fluid d-flex">
     <button
-      class="navbar-toggler dropdown-nav__closeNavBtn border-0"
+      class="navbar-toggler border-0 nav-icon"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNavAltMarkup"
-      aria-controls="navbarNavAltMarkup"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasNavbar"
+      aria-controls="offcanvasNavbar"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand fw-bold text-dark ms-5" href="/plants">PLANTS</a>
-    <div class="navbar-nav align-self-end ms-auto">
-      <div>
+
+    <a
+      class="navbar-brand fw-bold text-dark position-absolute top-50 start-50 translate-middle"
+      href="/plants"
+      >PLANTS</a
+    >
+    <div>
+      <button class="btn searchBtn" onclick="show()">
+        <svg
+          class="d-inline me-2"
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-search icon"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+          />
+        </svg>
+      </button>
+
       <% if(!currentUser) {%>
-      <a class="nav-link fw-bold" href="/login">Login</a>
-      <a class="nav-link fw-bold" href="/register">Register</a>
+      <a class="nav-link d-none d-md-inline text-muted" href="/login">Login</a>
+      <a class="nav-link ms-3 d-none d-md-inline text-muted" href="/register"
+        >Register</a
+      >
       <% }else{ %>
-      <a class="nav-link fw-bold" href="/logout">Logout</a>
+      <a class="nav-link d-none d-md-inline text-muted" href="/logout"
+        >Logout</a
+      >
       <% } %> <% if(currentUser) {%>
-      <a href="/user/<%= currentUser._id %>/cart " class="me-3 mb-2"
+      <a
+        href="/user/<%= currentUser._id %>/cart "
+        class="ms-4 navbar_cart-icon d-inline"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           width="25"
@@ -35,21 +59,89 @@
       ></a>
       <% } %>
     </div>
-
-    <div class="collapse navbar-collapse dropdown-nav" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" aria-current="page" href="/">Home</a>
-        <a class="nav-link" href="/plants">Plants</a>
-        <a class="nav-link" href="/plants/new">Add plant</a>
-        <a class="nav-link" href="/user">Users</a>
-
+    <div class="searchBox d-flex justify-content-center">
+      <form class="form-floating" action="/plants" method="GET">
+        <input
+          class="form-control no-border search_input"
+          name="searchTerm"
+          type="search"
+          id="floatingInput"
+          placeholder="Search"
+          id="searchInput"
+        />
+        <label class="form-label ps-3" for="floatingInputValue">
+          <svg
+            class="d-inline me-2"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-search"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+            />
+          </svg>
+          Search
+        </label>
+      </form>
+      <button class="btn-close closeBtn d-inline" onclick="hide()"></button>
+    </div>
+  </div>
+  <div
+    class="offcanvas offcanvas-start"
+    tabindex="-1"
+    id="offcanvasNavbar"
+    aria-labelledby="offcanvasNavbarLabel"
+  >
+    <div class="offcanvas-header">
+      <button
+        type="button"
+        class="btn-close m-2 ms-4 border-0 p-3 nav-icon"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="navbar-nav ms-5 flex-grow-1">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/plants">Plants</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/plants/new">Add plant</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/user">Users</a>
+        </li>
         <% if(!currentUser) {%>
-        <a class="nav-link fw-bold" href="/login">Login</a>
-        <a class="nav-link fw-bold" href="/register">Register</a>
+        <li class="nav-item">
+          <a class="nav-link d-block d-md-none" href="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-block d-md-none" href="/register">Register</a>
+        </li>
         <% }else{ %>
-        <a class="nav-link fw-bold" href="/logout">Logout</a>
+        <li class="nav-item">
+          <a class="nav-link d-block d-md-none" href="/logout">Logout</a>
+        </li>
         <% } %>
-      </div>
+      </ul>
     </div>
   </div>
 </nav>
+
+<script>
+  const searchBox = document.querySelector(".searchBox");
+  const show = () => {
+    searchBox.classList.add("active");
+  };
+  const hide = () => {
+    searchBox.classList.remove("active");
+  };
+
+
+</script>

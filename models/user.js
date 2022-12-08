@@ -11,6 +11,7 @@ const UserSchema = new Schema(
       unique: true,
     },
     location: String,
+    image: String,
 
     reviews: [
       {
