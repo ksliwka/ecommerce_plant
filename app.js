@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const path = require("path"); //path is Node.js native utility module, require is Node.js global function that allows you to extract contents from module.exports object inside some file
 const mongoose = require("mongoose");
@@ -18,14 +22,15 @@ const User = require("./models/user");
 const flash = require("connect-flash");
 const { isLoggedIn } = require("./middleware.js");
 
+const plants = require("./routes/plants");
+const user = require("./routes/user");
+const reviews = require("./routes/reviews");
+const cart = require("./routes/cart");
 
-const plants = require('./routes/plants');
-const user = require('./routes/user')
-const reviews = require('./routes/reviews')
-const cart = require('./routes/cart')
-
-
-mongoose.connect("mongodb://localhost:27017/plant-shop"); //gdzie znajduje się nasza db (wpisując use db to zamiast db wpisuje plant-shop)
+var MongoDBStore = require('connect-mongodb-session')(session);
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
+// "mongodb://localhost:27017/plant-shop"
+mongoose.connect(dbUrl); //gdzie znajduje się nasza db (wpisując use db to zamiast db wpisuje plant-shop)
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -43,12 +48,25 @@ app.use(express.urlencoded({ extended: true })); //tell express to parse the  bo
 app.use(methodOverride("_method"));
 app.use(express.static("public"));
 
+
+const store = new MongoDBStore({
+  url: dbUrl,
+  secret: 'secret',
+  touchAfter: 24 * 60 * 60,
+});
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e);
+});
+
 const sessionConfig = {
+  store,
   secret: "secre",
   resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
+    // secure: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 06 * 24 * 7,
   },
@@ -70,16 +88,10 @@ app.use((req, res, next) => {
   next();
 }); //so now in all my templates I should have access to current user, success and error
 
-
-
-
-
-
-app.use('/plants', plants);
-app.use('/user', user);
-app.use('/user/:id/reviews', reviews)
-app.use('/user/:id/cart', cart)
-
+app.use("/plants", plants);
+app.use("/user", user);
+app.use("/user/:id/reviews", reviews);
+app.use("/user/:id/cart", cart);
 
 app.get("/", (req, res) => {
   res.render("home");
@@ -135,14 +147,6 @@ app.get("/logout", (req, res, next) => {
   req.flash("success", "Goodbye!");
   res.redirect("/plants");
 });
-
-
-
-
-
-
-
-
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 404));

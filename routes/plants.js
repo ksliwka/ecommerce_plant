@@ -5,6 +5,9 @@ const ExpressError = require("../utils/ExpressError");
 const Plant = require("../models/plant");
 const { plantSchema } = require("../schemas.js");
 const { isLoggedIn } = require("../middleware.js");
+// const multer = require("multer");
+// const {storage} = require('../cloudinary');
+// const upload = multer({ storage });
 
 const validatePlant = (req, res, next) => {
   const { error } = plantSchema.validate(req.body);
@@ -43,6 +46,10 @@ router.post(
     res.redirect(`/plants/${plant._id}`);
   })
 );
+// router.post("/", upload.array("images"), (req, res) => {
+//   console.log(req.body, req.files);
+//   res.send("IT WORKED");
+// });
 
 router.get("/:id", async (req, res) => {
   const plant = await Plant.findById(req.params.id).populate("author");
