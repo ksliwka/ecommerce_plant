@@ -9,7 +9,7 @@ const catchAsync = require("./utils/catchAsync");
 const methodOverride = require("method-override");
 const Plant = require("./models/plant");
 const Cart = require("./models/cart");
-const { nextTick } = require("process");
+// const { nextTick } = require("process");
 const ExpressError = require("./utils/ExpressError");
 const Review = require("./models/review");
 const passport = require("passport");
@@ -17,7 +17,7 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const flash = require("connect-flash");
 const { isLoggedIn } = require("./middleware.js");
-const { captureStackTrace } = require("./utils/ExpressError");
+
 
 const plants = require('./routes/plants');
 const user = require('./routes/user')

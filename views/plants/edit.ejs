@@ -1,80 +1,87 @@
 <% layout('layouts/boilerplate')%>
-<div class="row">
-  <h1 class="text-center">Edit Plant</h1>
-  <div class="col-6 offset-3">
-    <form
+
+
+<div class="container mt-5 position-relative">
+  <div class="row justify-content-center">
+    <div class="container_register  col-md-4 p-5 ">
+    <h1 class="fw-bolder  login_heading mb-4">EDIT PLANT</h1>
+
+      <form
       action="/plants/<%=plant._id%>?_method=PUT"
       method="POST"
       novalidate
       class="needs-validation"
     >
-      <div class="mb-3">
-        <label class="form-label" for="title">Title</label>
+    <div class="mb-3">
+      <label class="form-label" for="title">Title</label>
+      <input
+        class="form-control"
+        type="text"
+        id="title"
+        name="plant[title]"
+        value="<%=plant.title %>"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="location">Location</label>
+      <input
+        class="form-control"
+        type="text"
+        id="location"
+        name="plant[location]"
+        value="<%=plant.location %>"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="image">Image Url</label>
+      <input
+        class="form-control"
+        type="text"
+        id="image"
+        name="plant[image]"
+        value="<%=plant.image %>"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="price">Plant Price</label>
+      <div class="input-group">
+        <span class="input-group-text" id="price-label">$</span>
         <input
-          class="form-control"
           type="text"
-          id="title"
-          name="plant[title]"
-          value="<%=plant.title %>"
+          class="form-control"
+          id="price"
+          placeholder="0.00"
+          aria-label="price"
+          aria-describedby="price-label"
+          name="plant[price]"
+          value="<%=plant.price %>"
           required
         />
       </div>
-      <div class="mb-3">
-        <label class="form-label" for="location">Location</label>
-        <input
-          class="form-control"
-          type="text"
-          id="location"
-          name="plant[location]"
-          value="<%=plant.location %>"
-          required
-        />
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="image">Image Url</label>
-        <input
-          class="form-control"
-          type="text"
-          id="image"
-          name="plant[image]"
-          value="<%=plant.image %>"
-          required
-        />
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="price">Plant Price</label>
-        <div class="input-group">
-          <span class="input-group-text" id="price-label">$</span>
-          <input
-            type="text"
-            class="form-control"
-            id="price"
-            placeholder="0.00"
-            aria-label="price"
-            aria-describedby="price-label"
-            name="plant[price]"
-            value="<%=plant.price %>"
-            required
-          />
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label" for="description">Description</label>
-        <textarea
-          class="form-control"
-          type="text"
-          id="description"
-          name="plant[description]"
-          required
-        >
+    </div>
+  
+  
+    <div class="mb-3">
+      <label class="form-label" for="description">Description</label>
+      <textarea
+        class="form-control"
+        type="text"
+        id="description"
+        name="plant[description]"
+        required
+      >
 <%= plant.description%></textarea
-        >
-      </div>
-      <div class="mb-3">
-        <button class="btn btn-dark custom_button">Update Campground</button>
-      </div>
-    </form>
-    <a href="/plants/<%= plant._id%>">Back To Campground</a>
+      >
+    </div>
+        <div class="mb-3">
+          <button class="btn btn-dark mt-5 custom_button">Update plant</button>
+        </div>
+      </form>
+      <a href="/plants/<%= plant._id%>" class="mt-4">Back To Plant</a>
+
   </div>
-</div>
+  </div>
+  </div>
