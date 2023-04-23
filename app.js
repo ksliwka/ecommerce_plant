@@ -27,7 +27,7 @@ const user = require("./routes/user");
 const reviews = require("./routes/reviews");
 const cart = require("./routes/cart");
 
-const MongoDBStore = require('connect-mongodb-session')(session);
+// const MongoDBStore = require('connect-mongodb-session')(session);
 
 const dbUrl = process.env.DB_URL 
 // || "mongodb://0.0.0.0:27017/";
@@ -50,19 +50,19 @@ app.use(methodOverride("_method"));
 app.use(express.static("public"));
 
 
-const store = new MongoDBStore({
-  url: dbUrl,
-  secret: 'secret',
-  touchAfter: 24 * 60 * 60,
-});
+// const store = new MongoDBStore({
+//   url: dbUrl,
+//   secret: 'secret',
+//   touchAfter: 24 * 60 * 60,
+// });
 
-store.on("error", function (e) {
-  console.log("SESSION STORE ERROR", e);
-});
+// store.on("error", function (e) {
+//   console.log("SESSION STORE ERROR", e);
+// });
 
 const sessionConfig = {
-  store,
-  secret: "secre",
+  // store,
+  secret: "secret",
   resave: false,
   saveUninitialized: true,
   cookie: {
