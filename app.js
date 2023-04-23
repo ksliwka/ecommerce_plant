@@ -27,7 +27,8 @@ const user = require("./routes/user");
 const reviews = require("./routes/reviews");
 const cart = require("./routes/cart");
 
-var MongoDBStore = require('connect-mongodb-session')(session);
+const MongoDBStore = require('connect-mongodb-session')(session);
+
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
 "mongodb://localhost:27017/plant-shop"
 mongoose.connect(dbUrl); //gdzie znajduje się nasza db (wpisując use db to zamiast db wpisuje plant-shop)
