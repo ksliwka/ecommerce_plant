@@ -1,17 +1,14 @@
 <% layout('layouts/boilerplate') %>
 
-
-  <div class="container mt-4">
-
-   
-    
-    <div class="row d-flex justify-content-center">
+<div class="container mt-4">
+  <div class="row d-flex">
     <% for(let plant of plants){ %>
 
-        <div class="col-md-4 ">
-      <div class="card_custom card h-300 mb-3 d-inline d-block hover-shadow m-3">
-        <a href="/plants/<%= plant._id %>" class="text-decoration-none" >
-      
+    <div class="col-md-4">
+      <div
+        class="card_custom card h-300 mb-3 d-inline d-block hover-shadow m-3"
+      >
+        <a href="/plants/<%= plant._id %>" class="text-decoration-none">
           <img
             class="card-img-top img-fluid"
             id="card_img"
@@ -20,22 +17,42 @@
           />
 
           <div class="card-body text-dark">
-            <h5 class=" card-title"><%=plant.title%></h5>
+            <h5 class="card-title"><%=plant.title%></h5>
             <p class="card-text">
               <small class="text-muted"> <%= plant.location %> </small>
             </p>
-            <p class="card-text ">
-              <small class="fw-bolder" >$ <%= plant.price %> </small>
+            <p class="card-text">
+              <small class="fw-bolder">$ <%= plant.price %> </small>
             </p>
-            
-
           </div>
-        </div>
-    </a>
-  </div>
-  
+        </a>
+      </div>
+    </div>
+
     <% } %>
   </div>
-  </div>
+</div>
+<script>
+  window.onload = function () {
+    const filterPlantCards = () => {
+      const searchTerm = document
+        .getElementById("floatingInput")
+        .value.toLowerCase();
+      const plantCards = document.querySelectorAll(".card_custom");
 
+      plantCards.forEach((card) => {
+        const plantTitle = card
+          .querySelector(".card-title")
+          .textContent.toLowerCase();
+        if (plantTitle.includes(searchTerm)) {
+          card.classList.remove("d-none");
+        } else {
+          card.classList.add("d-none");
+        }
+      });
+    };
 
+    const searchInput = document.getElementById("floatingInput");
+    searchInput.addEventListener("input", filterPlantCards);
+  };
+</script>

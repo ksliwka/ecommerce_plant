@@ -67,7 +67,7 @@
           type="search"
           id="floatingInput"
           placeholder="Search"
-          id="searchInput"
+          onChange="filterPlantCards()"
         />
         <label class="form-label ps-3" for="floatingInputValue">
           <svg
@@ -142,6 +142,4 @@
   const hide = () => {
     searchBox.classList.remove("active");
   };
-
-
 </script>
