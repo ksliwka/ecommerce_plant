@@ -87,6 +87,12 @@ nav {
   letter-spacing: 10px;
 }
 
+
+#card_img{
+  height: 500px;
+  object-fit: cover;
+}
+
 @media (min-width: 1400px) {
   .container-login {
     width: 900px;
