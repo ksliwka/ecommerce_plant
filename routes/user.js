@@ -8,7 +8,6 @@ const Plant = require("../models/plant");
 router.get("/", async (req, res) => {
   const users = await User.find({});
 
-  console.log(users);
   res.render("users/index", { users });
 });
 
@@ -18,6 +17,5 @@ router.get("/:id", async (req, res) => {
 
   res.render("users/show", { user, plants });
 });
-
 
 module.exports = router;

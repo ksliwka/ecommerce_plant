@@ -13,7 +13,6 @@ const catchAsync = require("./utils/catchAsync");
 const methodOverride = require("method-override");
 const Plant = require("./models/plant");
 const Cart = require("./models/cart");
-// const { nextTick } = require("process");
 const ExpressError = require("./utils/ExpressError");
 const Review = require("./models/review");
 const passport = require("passport");
@@ -50,15 +49,6 @@ app.use(methodOverride("_method"));
 app.use(express.static("public"));
 
 
-// const store = new MongoDBStore({
-//   url: dbUrl,
-//   secret: 'secret',
-//   touchAfter: 24 * 60 * 60,
-// });
-
-// store.on("error", function (e) {
-//   console.log("SESSION STORE ERROR", e);
-// });
 
 const sessionConfig = {
   // store,
