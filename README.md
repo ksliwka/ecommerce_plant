@@ -65,5 +65,4 @@ This project requires the following modules:
 2. Create a .env file in the project root directory.
 3. Add the required environment variables with their corresponding values.
 4. Example .env file:
-
-MONGODB_URI=your-mongodb-uri
+`MONGODB_URI=your-mongodb-uri`
